@@ -4,7 +4,7 @@
 		<div class="row">
 			<div class="col-2" style="border:1px solid blue;">
 				<ul>
-					<li class="nav-link">LINK 1</li>
+					<li class="nav-link">COQUINHO 1</li>
 					<li class="nav-link">LINK 2</li>
 					<li class="nav-link">LINK 3</li>
 				</ul>
