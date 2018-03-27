@@ -2,13 +2,7 @@
 
 <div class="container-fluid" >
 	<div class="row">
-		<div class="col-2 bg-menuNoticia">
-			<ul class="nav">
-				<li class="link"><button class="btn btn-primary"><a href="">Todas as Notícias</a></button></li>
-				<li class="link"><button class="btn btn-primary"><a href="">Nova Notícia</a></button></li>
-			</ul>
-
-		</div>
+		<?php require_once("side_menu.php");?>
 
 		<div class="offset-1 col-8 bg-novaNoticia">
 			<div>
@@ -58,7 +52,5 @@ if(!empty($_POST)){
 	$cadNoticias->cadastrarNoticia($_POST['titulo'], $_POST['subtitulo'], $_POST['data'], $_POST['conteudo']);
 }
 
+require_once("footer.php");
 ?>
-
-
-<?php require_once("footer.php"); ?>

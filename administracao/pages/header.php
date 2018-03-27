@@ -21,10 +21,10 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="nav">
 					<li class="nav-item active">
-						<a href="#" class="nav-link">Home</a>
+						<a href="index.php" class="nav-link">Home</a>
 					</li>
 					<li class="nav-item">
-						<a href="#" class="nav-link">Notícias</a>
+						<a href="busca_noticias.php" class="nav-link">Notícias</a>
 					</li>					
 					<li class="nav-item">
 						<a href="#" class="nav-link">Eventos</a>
