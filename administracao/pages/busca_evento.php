@@ -7,16 +7,16 @@
 
 		<div class="offset-1 col-8 bg-novaNoticia">
 			<div>
-				<h1>Notícia</h1>
-				<form action="busca_noticias.php" method="post" enctype="multipart/form-data" class="form">
+				<h1>Eventos</h1>
+				<form action="busca_evento.php" method="post" enctype="multipart/form-data" class="form">
 
 					<?php			
 
-					require_once("../classes/Noticias.php");
+					require_once("../classes/Eventos.php");
 
 					if(!isset($_GET['id'])){
-						$buscaNoticias = new Noticias();
-						$noticias = $buscaNoticias->buscarNoticias();	
+						$buscaEventos = new Eventos();
+						$eventos = $buscaEventos->buscarEventos();	
 
 					}else{
 						$buscaNoticias = new Noticias();
@@ -58,7 +58,7 @@
 							$pasta = $imagens[$i]['pasta'];
 							$imagem = $imagens[$i]['nome'];
 
-							echo "<img src='../files/images/noticias/".$pasta .$imagem."'
+							echo "<img src='../files/images/eventos/".$pasta .$imagem."'
 							style='height: 150px; 
 							border: 1px solid #000; 
 							border-radius:5px'>";

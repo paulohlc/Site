@@ -1,25 +1,35 @@
 <?php
 require_once("Sql.php");
 
-class Noticias{	
+class Eventos{	
 	private $fotos;
 	private $pasta_fotos;
 
 	//Método para cadastrar os dados no banco
-	public function cadastrarNoticia($titulo, $subtitulo, $data, $conteudo)
+	public function cadastrarEvento($nome, $conteudo, $data, $hora, $endereco, $localRefencia)
 	{
+		
+		$geocode = $this->geocode($endereco);
+
+		print_r($geocode);
+
 		$sql = new Sql();
 
+
 		// variavel id, pois o $sql->query() retorna o valor do ultimo ID
-		$id = $sql->query("INSERT INTO noticias (titulo, subtitulo, data, conteudo) VALUES (:TITULO, :SUBTITULO, :DATA, :CONTEUDO)", $params = array(
-			':TITULO' => utf8_decode($titulo),
-			':SUBTITULO' => utf8_decode($subtitulo),
+		$id = $sql->query("INSERT INTO eventos (nome, conteudo, data, hora, endereco, local_referencia, latitude, longitude) VALUES (:NOME, :CONTEUDO, :DATA, :HORA, :ENDERECO, :LOCAL_REFERENCIA, :LATITUDE, :LONGITUDE)", $params = array(
+			':NOME' => utf8_decode($nome),
+			':CONTEUDO' => utf8_decode($conteudo),
 			':DATA' => $data,
-			':CONTEUDO' => utf8_decode($conteudo)
+			':HORA' => $hora,
+			':ENDERECO' => utf8_decode($endereco),
+			':LOCAL_REFERENCIA' => utf8_decode($localRefencia),
+			':LATITUDE' => $geocode[0],
+			':LONGITUDE' => $geocode[1]
 		));
 
 		for ($i=0; $i < count($this->fotos); $i++) { 
-			$sql->query("INSERT INTO imagem_noticia (id, nome, pasta) VALUES (:ID, :NOME, :PASTA)", $params = array(
+			$sql->query("INSERT INTO imagem_evento (id, nome, pasta) VALUES (:ID, :NOME, :PASTA)", $params = array(
 				':ID' => $id,
 				':NOME' => $this->fotos[$i],
 				':PASTA' => $this->pasta_fotos
@@ -32,7 +42,7 @@ class Noticias{
 
 	public function cadImagem($folder,$imagem)
 	{
-		$caminho_imagem = "../files/images/noticias/$folder/";
+		$caminho_imagem = "../files/images/eventos/$folder/";
 		if(!is_dir($caminho_imagem)){
 			mkdir($caminho_imagem);
 		}
@@ -43,7 +53,7 @@ class Noticias{
 			//Cria um nome unico pra imagem
 			$nome_imagem[$i] = md5(uniqid(time())).".".$ext[1];
 			//Cria o caminho que a fotos deve ser gravada
-			$caminho_imagem = "../files/images/noticias/$folder/".$nome_imagem[$i];
+			$caminho_imagem = "../files/images/eventos/$folder/".$nome_imagem[$i];
 			//Grava as fotos no caminho
 			move_uploaded_file($imagem["tmp_name"][$i], $caminho_imagem);
 		}
@@ -54,14 +64,14 @@ class Noticias{
 		
 	}
 
-	public function buscarNoticias(){
+	public function buscarEventos(){
 
 		//$t = getAnoNoti();
 
 
 
 		$sql = new Sql();
-		$results = $sql->select("SELECT * FROM noticias ORDER BY `data` DESC");
+		$results = $sql->select("SELECT * FROM eventos ORDER BY `data` DESC");
 
 
 		$diasSemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
@@ -76,8 +86,9 @@ class Noticias{
 
 		<table class='table table-striped'>		
 		<tr>		
-		<th>Data</th>	
-		<th>Título</th>
+		<th>Data</th>
+		<th>Hora</th>	
+		<th>Nome do Evento</th>
 		</tr>
 		";
 
@@ -137,7 +148,7 @@ function buscarNoticiaEspecifica($id){
 	$meses = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
 */	array_push($results, $result);
 	
-	$result = $sql->select("SELECT * FROM imagem_noticia WHERE id = :ID ", array(
+	$result = $sql->select("SELECT * FROM imagem WHERE id = :ID ", array(
 		':ID' => $id
 	));		
 
@@ -179,6 +190,55 @@ function buscarNoticiaEspecifica($id){
 	}*/
 
 
+}
+
+function geocode($address){
+ 
+    // url encode the address
+    $address = urlencode($address);
+     
+    // google map geocode api url
+    $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key=AIzaSyBA1TKoGZ58eib4P2SMaEXlFCU6wJ4dKBQ";
+ 
+    // get the json response
+    $resp_json = file_get_contents($url);
+     
+    // decode the json
+    $resp = json_decode($resp_json, true);
+ 
+    // response status will be 'OK', if able to geocode given address 
+    if($resp['status']=='OK'){
+ 
+        // get the important data
+        $lati = isset($resp['results'][0]['geometry']['location']['lat']) ? $resp['results'][0]['geometry']['location']['lat'] : "";
+        $longi = isset($resp['results'][0]['geometry']['location']['lng']) ? $resp['results'][0]['geometry']['location']['lng'] : "";
+        $formatted_address = isset($resp['results'][0]['formatted_address']) ? $resp['results'][0]['formatted_address'] : "";
+         
+        // verify if data is complete
+        if($lati && $longi && $formatted_address){
+         
+            // put the data in the array
+            $data_arr = array();            
+             
+            array_push(
+                $data_arr, 
+                    $lati, 
+                    $longi, 
+                    $formatted_address
+                );
+             
+            return $data_arr;
+             
+        }else{
+            return false;
+        }
+         
+    }
+ 
+    else{
+        echo "<strong>ERROR: {$resp['status']}</strong>";
+        return false;
+    }
 }
 
 
