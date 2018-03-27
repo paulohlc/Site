@@ -127,17 +127,23 @@ class Noticias{
 function buscarNoticiaEspecifica($id){
 
 	$sql = new Sql();
-
-	$results = $sql->select("SELECT * FROM noticias WHERE id = :ID ", array(
+	$results = array();
+	$result = $sql->select("SELECT * FROM noticias WHERE id = :ID ", array(
 		':ID' => $id
 	));
 
+/*
 	$diasSemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
 	$meses = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
+*/	array_push($results, $result);
+	
+	$result = $sql->select("SELECT * FROM imagem WHERE id = :ID ", array(
+		':ID' => $id
+	));		
 
-	foreach ($results as $result) {
-	}
-	return $result; 
+	array_push($results, $result);
+	
+	return $results; 
 
 	/*echo "
 	<div class='col-12' style='border:1px solid #000; padding: 10px;border-radius: 5px; background-color: #fff;height: 60vh; overflow: auto;'>

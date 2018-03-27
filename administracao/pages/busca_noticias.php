@@ -87,11 +87,14 @@
 								$buscaNoticias = new Noticias();
 								$noticias = $buscaNoticias->buscarNoticias();	
 
-
 							}else{
 								$buscaNoticias = new Noticias();
-								$noticias = $buscaNoticias->buscarNoticiaEspecifica($_GET['id']);								
+								$noticias = $buscaNoticias->buscarNoticiaEspecifica($_GET['id']);
+							
+								$imagens = $noticias[1];
+								$noticias = $noticias[0][0];				
 
+								
 
 								$diasSemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
 								$meses = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
@@ -117,7 +120,7 @@
 								$data = str_replace("@", $mes, $data);		
 								$data = str_replace("$", "de", $data);
 
-								$imagens = explode(';', $noticias['imagem']);
+								
 								//print_r($imagens);
 
 
@@ -129,13 +132,12 @@
 								<td>" . utf8_decode($noticias['conteudo']) . "</td>
 								<td>";
 
-
-								//$noticias['pasta_imagem']
-
 								for($i = 0; $i < count($imagens); $i ++){
+									$pasta = $imagens[$i]['pasta'];
+									$imagem = $imagens[$i]['nome'];
 
-									//echo $imagens[$i]. "<br>
-									echo "<img src='../files/images/noticias/".$noticias['pasta_imagem'] .$imagens[$i]."'
+									echo $imagem. "<br>";
+									echo "<img src='../files/images/noticias/".$pasta .$imagem."'
 									style='height: 150px; 
 									border: 1px solid #000; 
 									border-radius:5px'>";
