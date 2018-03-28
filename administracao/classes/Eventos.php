@@ -11,8 +11,6 @@ class Eventos{
 		
 		$geocode = $this->geocode($endereco);
 
-		print_r($geocode);
-
 		$sql = new Sql();
 
 
@@ -99,9 +97,11 @@ class Eventos{
 			$data = str_replace("*", "de", $data);
 			$data = str_replace("@", $mes, $data);
 			$data = str_replace("$", "de", $data);
+
 			echo "<tr>
 			<td>$data</td>
-			<td><a style='color:#212529' href='?id=".$result['id']."'>" .$result['titulo']. "</a></td>
+			<td>". $result['hora'] ."</td>
+			<td><a style='color:#212529' href='?id=".$result['id']."'>" .$result['nome']. "</a></td>
 			</tr>";
 				/*
 			echo "
@@ -135,11 +135,11 @@ class Eventos{
 
 }
 
-function buscarNoticiaEspecifica($id){
+function buscarEventoEspecifico($id){
 
 	$sql = new Sql();
 	$results = array();
-	$result = $sql->select("SELECT * FROM noticias WHERE id = :ID ", array(
+	$result = $sql->select("SELECT e.nome, e.conteudo, e.data, e.hora, e.endereco, e.local_referencia FROM eventos as e WHERE e.id = :ID ", array(
 		':ID' => $id
 	));
 
@@ -148,7 +148,7 @@ function buscarNoticiaEspecifica($id){
 	$meses = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
 */	array_push($results, $result);
 	
-	$result = $sql->select("SELECT * FROM imagem WHERE id = :ID ", array(
+	$result = $sql->select("SELECT * FROM imagem_evento WHERE id = :ID ", array(
 		':ID' => $id
 	));		
 

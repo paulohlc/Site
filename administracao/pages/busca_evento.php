@@ -19,50 +19,55 @@
 						$eventos = $buscaEventos->buscarEventos();	
 
 					}else{
-						$buscaNoticias = new Noticias();
-						$noticias = $buscaNoticias->buscarNoticiaEspecifica($_GET['id']);
+						$buscaNoticias = new Eventos();
+						$eventos = $buscaNoticias->buscarEventoEspecifico($_GET['id']);
 
-						$imagens = $noticias[1];
-						$noticias = $noticias[0][0];				
+						$imagens = $eventos[1];
+						
+						$eventos = $eventos[0][0];				
 
 						$diasSemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
 						$meses = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
 
+						$dia = $diasSemana[date('w', strtotime($eventos['data']))];
+						$mes = $meses[date('n', strtotime($eventos['data']))-1];
+						$data = $dia.", ".date("d * @ $ Y", strtotime($eventos['data']));
+						$data = str_replace("*", "de", $data);
+						$data = str_replace("@", $mes, $data);		
+						$data = str_replace("$", "de", $data);						
+
 						echo "
 						<div class='col-12' style='border:1px solid #000; padding: 10px;border-radius: 5px; background-color: #fff;height: 60vh; overflow: auto;'>
 
-						<table class='table table-striped'>		
-						<tr>
-						<th>Data</th>	
-						<th>Título</th>
-						<th>Subtitulo</th>
-						<th>Conteudo</th>
-						<th>Imagens</th>
-						</tr>";	
+						<div align='center'> <h2><b><i>".utf8_decode($eventos['nome'])." </i></b></h2></div>"; // nome do evento
 
-						$dia = $diasSemana[date('w', strtotime($noticias['data']))];
-						$mes = $meses[date('n', strtotime($noticias['data']))-1];
-						$data = $dia.", ".date("d * @ $ Y", strtotime($noticias['data']));
-						$data = str_replace("*", "de", $data);
-						$data = str_replace("@", $mes, $data);		
-						$data = str_replace("$", "de", $data);
-
-						echo "<tr>
-						<td>$data</td>
-						<td>". utf8_decode($noticias['titulo']) ."</td>
-						<td>" . utf8_decode($noticias['subtitulo']) . "</td>
-						<td>" . utf8_decode($noticias['conteudo']) . "</td>
-						<td>";
+						// imagens
+						echo " <br>
+						<div align='center'>";
 
 						for($i = 0; $i < count($imagens); $i ++){
+							/*while ($imagem[$i]['nome']) {
+								# code...
+							}*/
 							$pasta = $imagens[$i]['pasta'];
 							$imagem = $imagens[$i]['nome'];
 
-							echo "<img src='../files/images/eventos/".$pasta .$imagem."'
-							style='height: 150px; 
-							border: 1px solid #000; 
+
+							echo "<img src='../files/images/eventos/".$pasta .$imagem. "'
+
+							class='img'
+							style='border: 1px solid #000; 
 							border-radius:5px'>";
-						}
+						}		
+
+						echo "</div><br>";				
+
+
+						$conteudo = str_replace(chr(10),"<br/>",utf8_encode($eventos['conteudo']));
+
+						echo "<b>Data: </b>". $data . "<br><b>Horário: </b>". $eventos['hora']."<br>". "<div align=center>" . "<b>Detalhes do Evento: </b><br><div id='conteudo'>".$conteudo. "</div></div><br>	". "<b>Endereço: </b>". utf8_encode($eventos['endereco']);
+
+
 
 						echo 
 						"</td>

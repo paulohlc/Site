@@ -10,31 +10,31 @@
 				<form action="cad_evento.php" method="post" enctype="multipart/form-data" class="form">
 					<div class="col-12">
 						<div class="form-group col-8">
-							<label for="idNome">*Nome do Evento: </label>
+							<label for="idNome">Nome do Evento: </label>
 							<input class="form-control" type="text" name="nome" id="idNome" required autocomplete="off">
 						</div>
 						<div class="form-group col-12">
-							<label for="idConteudo">*Conteúdo: </label>
+							<label for="idConteudo">Conteúdo: </label>
 							<textarea class="form-control" name="conteudo" id="idConteudo" rows="6" required></textarea>
 						</div>
 
 						<div class="form-group col-3" >
-							<label for="idData">*Data: </label>
+							<label for="idData">Data: </label>
 							<input class="form-control" type="date" name="data" id="idData" required>		
 						</div>
 
 						<div class="form-group col-2" >
-							<label for="idHora">*Hora: </label>
-							<input class="form-control" type="text" name="hora" id="idHora" required placeholder="00:00:00">		
+							<label for="idHora">Hora: </label>
+							<input class="form-control" type="text" name="hora" id="idHora" required placeholder="00:00:00" max="5" maxlength="5">		
 						</div>						
 
 						<div class="form-group col-11">
-							<label for="idEndereco">*Endereço: </label>
+							<label for="idEndereco">Endereço: </label>
 							<input class="form-control" type="text" name="endereco" id="idEndereco" required placeholder="Rua Afonso, 32, Jardim Bucampos">
 						</div>
 
 						<div class="form-group col-10">
-							<label for="idLocalReferencia">*Local de Referência: </label>
+							<label for="idLocalReferencia">Local de Referência: </label>
 							<textarea class="form-control" name="localReferencia" id="idLocalReferencia" rows="3" required></textarea>
 						</div>						
 
