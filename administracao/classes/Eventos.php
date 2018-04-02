@@ -17,31 +17,33 @@ class Eventos{
 		$getNome = $sql->select("SELECT * FROM eventos where nome = :NOME", $param = array(
 			':NOME'=>$nome
 		));
+		
 
 		$numNome = count($getNome);
 
-		// if($numNome != 0){ }else{ echo "Evento já existente, tente colocar outra edição, ou outro nome de evento"}
-
+		if($numNome < 1){ 
 
 		// variavel id, pois o $sql->query() retorna o valor do ultimo ID
-		$id = $sql->query("INSERT INTO eventos (nome, conteudo, data, hora, endereco, local_referencia, latitude, longitude) VALUES (:NOME, :CONTEUDO, :DATA, :HORA, :ENDERECO, :LOCAL_REFERENCIA, :LATITUDE, :LONGITUDE)", $params = array(
-			':NOME' => utf8_decode($nome),
-			':CONTEUDO' => utf8_decode($conteudo),
-			':DATA' => $data,
-			':HORA' => $hora,
-			':ENDERECO' => utf8_decode($endereco),
-			':LOCAL_REFERENCIA' => utf8_decode($localRefencia),
-			':LATITUDE' => $geocode[0],
-			':LONGITUDE' => $geocode[1]
-		));
+			$id = $sql->query("INSERT INTO eventos (nome, conteudo, data, hora, endereco, local_referencia, latitude, longitude) VALUES (:NOME, :CONTEUDO, :DATA, :HORA, :ENDERECO, :LOCAL_REFERENCIA, :LATITUDE, :LONGITUDE)", $params = array(
+				':NOME' => utf8_decode($nome),
+				':CONTEUDO' => utf8_decode($conteudo),
+				':DATA' => $data,
+				':HORA' => $hora,
+				':ENDERECO' => utf8_decode($endereco),
+				':LOCAL_REFERENCIA' => utf8_decode($localRefencia),
+				':LATITUDE' => $geocode[0],
+				':LONGITUDE' => $geocode[1]
+			));
 
-		for ($i=0; $i < count($this->fotos); $i++) { 
-			$sql->query("INSERT INTO imagem_evento (id, nome, pasta) VALUES (:ID, :NOME, :PASTA)", $params = array(
-				':ID' => $id,
-				':NOME' => $this->fotos[$i],
-				':PASTA' => $this->pasta_fotos
-			));				
-		}
+			for ($i=0; $i < count($this->fotos); $i++) { 
+				$sql->query("INSERT INTO imagem_evento (id, nome, pasta) VALUES (:ID, :NOME, :PASTA)", $params = array(
+					':ID' => $id,
+					':NOME' => $this->fotos[$i],
+					':PASTA' => $this->pasta_fotos
+				));				
+			}
+		}else{ echo "<script> alert('Evento já existente, tente colocar outra edição, ou outro nome de evento');</script>";}
+
 
 		
 
@@ -109,82 +111,82 @@ class Eventos{
 			<td>". $result['hora'] ."</td>
 			<td><a style='color:#212529' href='?id=".$result['id']."'>" .$result['nome']. "</a></td>
 			</tr>";
+		}
+
+
+		echo "</table>";	
+
 	}
 
+	function buscarEventoEspecifico($id){
 
-	echo "</table>";	
+		$sql = new Sql();
+		$results = array();
+		$result = $sql->select("SELECT e.nome, e.conteudo, e.data, e.hora, e.endereco, e.local_referencia FROM eventos as e WHERE e.id = :ID ", array(
+			':ID' => $id
+		));
 
-}
+		array_push($results, $result);
+		
+		$result = $sql->select("SELECT * FROM imagem_evento WHERE id = :ID ", array(
+			':ID' => $id
+		));		
 
-function buscarEventoEspecifico($id){
-
-	$sql = new Sql();
-	$results = array();
-	$result = $sql->select("SELECT e.nome, e.conteudo, e.data, e.hora, e.endereco, e.local_referencia FROM eventos as e WHERE e.id = :ID ", array(
-		':ID' => $id
-	));
-
-	array_push($results, $result);
-	
-	$result = $sql->select("SELECT * FROM imagem_evento WHERE id = :ID ", array(
-		':ID' => $id
-	));		
-
-	array_push($results, $result);
-	
-	return $results; 
+		array_push($results, $result);
+		
+		return $results; 
 
 
-}
+	}
 
-function geocode($address){
- 
+	function geocode($address){
+		
     // url encode the address
-    $address = urlencode($address);
-     
+		$address = urlencode($address);
+		
     // google map geocode api url
-    $url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key=AIzaSyBA1TKoGZ58eib4P2SMaEXlFCU6wJ4dKBQ";
- 
+		$url = "https://maps.googleapis.com/maps/api/geocode/json?address={$address}&key=AIzaSyBA1TKoGZ58eib4P2SMaEXlFCU6wJ4dKBQ";
+		
     // get the json response
-    $resp_json = file_get_contents($url);
-     
+		$resp_json = file_get_contents($url);
+		
     // decode the json
-    $resp = json_decode($resp_json, true);
- 
+		$resp = json_decode($resp_json, true);
+		
     // response status will be 'OK', if able to geocode given address 
-    if($resp['status']=='OK'){
- 
+		if($resp['status']=='OK'){
+			
         // get the important data
-        $lati = isset($resp['results'][0]['geometry']['location']['lat']) ? $resp['results'][0]['geometry']['location']['lat'] : "";
-        $longi = isset($resp['results'][0]['geometry']['location']['lng']) ? $resp['results'][0]['geometry']['location']['lng'] : "";
-        $formatted_address = isset($resp['results'][0]['formatted_address']) ? $resp['results'][0]['formatted_address'] : "";
-         
+			$lati = isset($resp['results'][0]['geometry']['location']['lat']) ? $resp['results'][0]['geometry']['location']['lat'] : "";
+			$longi = isset($resp['results'][0]['geometry']['location']['lng']) ? $resp['results'][0]['geometry']['location']['lng'] : "";
+			$formatted_address = isset($resp['results'][0]['formatted_address']) ? $resp['results'][0]['formatted_address'] : "";
+			
         // verify if data is complete
-        if($lati && $longi && $formatted_address){
-         
+			if($lati && $longi && $formatted_address){
+				
             // put the data in the array
-            $data_arr = array();            
-             
-            array_push(
-                $data_arr, 
-                    $lati, 
-                    $longi, 
-                    $formatted_address
-                );
-             
-            return $data_arr;
-             
-        }else{
-            return false;
-        }
-         
-    }
- 
-    else{
-        echo "<strong>ERROR: {$resp['status']}</strong>";
-        return false;
-    }
-}
+				$data_arr = array();            
+				
+				array_push(
+					$data_arr, 
+					$lati, 
+					$longi, 
+					$formatted_address
+				);
+				
+				return $data_arr;
+				
+			}else{
+				return false;
+			}
+			
+		}
+		
+		else{
+			echo "<strong>ERROR: {$resp['status']}</strong>";
+			return false;
+		}
+	}
 
 
 }
