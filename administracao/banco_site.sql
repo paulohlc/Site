@@ -19,7 +19,7 @@ create table imagem_noticia( -- imagem_noticia
 id int,
 nome varchar(100),
 pasta varchar(100),
-FOREIGN KEY (id) references noticias(id)
+FOREIGN KEY (id) references noticias(id) 
 
 )default charset utf8;
 
@@ -57,14 +57,17 @@ create table imagem_evento( -- imagem_noticia
 id int,
 nome varchar(100),
 pasta varchar(100),
-FOREIGN KEY (id) references eventos(id)
+FOREIGN KEY (id) references eventos(id) ON delete cascade -- on delete cascade, quando deletar de ma tabela deleta da outra com relação
 
 )default charset utf8;
 
 drop table imagem_evento;
 
 select * from eventos;
-select * from imagem_evento;
+select * from imagem_evento;																							
 
-select * from eventos as e join imagem_evento as im
+select * from eventos as e join imagem_evento as im	
 on e.id = im.id;
+
+DELETE FROM `site_pms`.`eventos` 																																																																																																																																																																																																																																																																																								
+WHERE `id`='5';

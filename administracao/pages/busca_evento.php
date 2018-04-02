@@ -39,16 +39,14 @@
 						echo "
 						<div class='col-12' style='border:1px solid #000; padding: 10px;border-radius: 5px; background-color: #fff;height: 60vh; overflow: auto;'>
 
-						<div align='center'> <h2><b><i>".utf8_decode($eventos['nome'])." </i></b></h2></div>"; // nome do evento
+						<div align='center'> <h2><b><i>".utf8_decode($eventos['nome'])." </i></b></h2></div>";
 
 						// imagens
 						echo " <br>
 						<div align='center'>";
 
 						for($i = 0; $i < count($imagens); $i ++){
-							/*while ($imagem[$i]['nome']) {
-								# code...
-							}*/
+					
 							$pasta = $imagens[$i]['pasta'];
 							$imagem = $imagens[$i]['nome'];
 

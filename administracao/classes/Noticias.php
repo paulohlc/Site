@@ -56,10 +56,6 @@ class Noticias{
 
 	public function buscarNoticias(){
 
-		//$t = getAnoNoti();
-
-
-
 		$sql = new Sql();
 		$results = $sql->select("SELECT * FROM noticias ORDER BY `data` DESC");
 
@@ -92,31 +88,6 @@ class Noticias{
 			<td>$data</td>
 			<td><a style='color:#212529' href='?id=".$result['id']."'>" .$result['titulo']. "</a></td>
 			</tr>";
-				/*
-			echo "
-		<p><b>TÍTULO </b>: " . utf8_decode($result['titulo']). "</p>
-		<p><b>SUBTITULO</b>: " . utf8_decode($result['subtitulo']). "</p>
-		<p><b>DATA</b>: " . date("d/m/Y", strtotime($result['data'])). "</p>
-		<p><b>CONTEUDO</b>: " . utf8_decode($result['conteudo']). "</p>
-
-
-		<a target='blank' href='imprimir_imagem.php?img=indicacao/".$this->nmrRegistro."/".$result['imagem']."'>
-		<img src='../images/indicacao/"./*.$this->nmrRegistro. "/"$results[0]['imagem']."'
-		style='height: 150px; 
-		border: 1px solid #000; 
-		border-radius:5px;'
-		class='img-fluid'>
-		</a>
-		<div class='dropdown-divider'>
-		</div>
-		";
-
-		echo " 
-		
-		<b>". date("d / m / Y" , strtotime($result['data'])). "</b> 
-		<b> - " . $result['titulo'] . "</b><br>
-		
-		";*/
 	}
 
 
@@ -132,10 +103,7 @@ function buscarNoticiaEspecifica($id){
 		':ID' => $id
 	));
 
-/*
-	$diasSemana = array('Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado');
-	$meses = array('Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro');
-*/	array_push($results, $result);
+	array_push($results, $result);
 	
 	$result = $sql->select("SELECT * FROM imagem_noticia WHERE id = :ID ", array(
 		':ID' => $id
@@ -145,58 +113,8 @@ function buscarNoticiaEspecifica($id){
 	
 	return $results; 
 
-	/*echo "
-	<div class='col-12' style='border:1px solid #000; padding: 10px;border-radius: 5px; background-color: #fff;height: 60vh; overflow: auto;'>
-
-	<table class='table table-striped'>		
-	<tr>
-	<th>Data</th>	
-	<th>Título</th>
-	</tr>
-	";
-
-	echo "<tr>
-			<td></td>
-			<td></td>
-		  </tr>	
-	";
-
-
-	echo "</table>";
-*/
-/*
-	foreach ($results as $result) {
-		$dia = $diasSemana[date('w',strtotime($result['data']))];
-		$mes = $meses[date('n', strtotime($result['data']))-1];
-		$data = $dia.", ".date("d * @, Y", strtotime($result['data']));
-		$data = str_replace("*", "de", $data);
-		$data = str_replace("@", $mes, $data);
-		echo "<tr>
-		<td>$data</td>
-		<td><a style='color:#212529' href='busca_noticia.php?id=".$result['id']."'>" .$result['titulo']. "</a></td>
-		</tr>";	
-
-	}*/
-
-
 }
 
-
-function buscarNoticiasAno($ano){
-
-
-
-}
-
-
-function getAnoNoti(){
-
-	$sql = new Sql();
-	$result = $sql-> select("SELECT data from tb_noticias");
-	$result = date("Y", strtotime($result));
-
-	echo $result;
-}
 
 
 }

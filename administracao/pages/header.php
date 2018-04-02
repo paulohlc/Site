@@ -9,18 +9,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Mina:700" rel="stylesheet">
 
 	<style>
-	/*.galeria{
-		border: 1px solid;
-		width: 300px;
-		float: center;
-		margin: 10px;
-		} */
-		/*.galeria:hover{ //QUANDO PASSAR O MOUSE EM CIMA MUDA A COR
-			border: 2px solid black;
-			box-shadow: 3px 3px 2px #000;
-			width: 660px;
-			height: 200px;	
-			}	*/
 			.img{
 				width: 25%;
 				height: 25%;

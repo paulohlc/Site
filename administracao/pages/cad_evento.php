@@ -20,12 +20,12 @@
 
 						<div class="form-group col-3" >
 							<label for="idData">Data: </label>
-							<input class="form-control" type="date" name="data" id="idData" required>		
+							<input class="form-control" type="date" name="data" id="idData" required value="<?php echo date('Y-m-d'); ?>">		
 						</div>
 
 						<div class="form-group col-2" >
 							<label for="idHora">Hora: </label>
-							<input class="form-control" type="text" name="hora" id="idHora" required placeholder="00:00:00" max="5" maxlength="5">		
+							<input class="form-control" type="text" name="hora" id="idHora" required placeholder="00:00" max="5" maxlength="5">		
 						</div>						
 
 						<div class="form-group col-11">
@@ -42,7 +42,7 @@
 							<div class="col-10 form-group">
 								<input type="file" name="imagem[]" id="idImagem" multiple>							
 							</div>
-							<div class="col-2"><button class="btn btn-primary" type="submit">Cadastrar</button></div>
+							<div class="col-2"><button class="btn btn-primary" type="submit"><b>Cadastrar</b></button></div>
 						</div>
 					</div>
 				</form>
