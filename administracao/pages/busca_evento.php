@@ -63,8 +63,9 @@
 
 						$conteudo = str_replace(chr(10),"<br/>",utf8_encode($eventos['conteudo']));
 
-						echo "<b>Data: </b>". $data . "<br><b>Horário: </b>". $eventos['hora']."<br>". "<div align=center>" . "<b>Detalhes do Evento: </b><br><div id='conteudo'>".$conteudo. "</div></div><br>	". "<b>Endereço: </b>". utf8_encode($eventos['endereco']);
+						$hora = substr($eventos['hora'], 0, -3);
 
+						echo "<b>Data: </b>". $data . "<br><b>Horário: </b>". $hora."<br>". "<div align=center>" . "<b>Detalhes do Evento: </b><br><div id='conteudo'>".$conteudo. "</div></div><br>	". "<b>Endereço: </b>". utf8_encode($eventos['endereco']);
 
 
 						echo 
